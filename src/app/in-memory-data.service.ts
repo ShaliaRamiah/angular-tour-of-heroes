@@ -6,6 +6,7 @@ import { Hero } from './hero';
   providedIn: 'root'
 })
 export class InMemoryDataService implements InMemoryDbService {
+  //creating mock db and returning it
   createDb() {
     const heroes = [
       { id: 12, name: 'Dr. Nice' },
@@ -20,7 +21,11 @@ export class InMemoryDataService implements InMemoryDbService {
     ];
     return {heroes};
   }
+
+  //generating unique ID for new heroes
   genId(heroes: Hero[]): number {
+    //if array is not empty, find max ID and add 1
+    //if empty, return the ID of first hero (11)
     return heroes.length > 0 ? Math.max(...heroes.map(hero => hero.id)) + 1 : 11;
   }
 }

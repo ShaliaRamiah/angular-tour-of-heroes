@@ -10,8 +10,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'})
 export class HeroService {
 
+  //hold the url of api endpoint for hero data
   private heroesUrl = 'api/heroes';
 
+  //object httpOptions used to set content type of HTTP requests to json
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json'})
   };
@@ -19,7 +21,7 @@ export class HeroService {
 
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
-  //getting heroes from the server
+  //http get request to the heroes api endpoint and returns an observable that emits an array of hero objects
   getHeroes(): Observable<Hero[]> {
     return this.http.get<Hero[]>(this.heroesUrl)
       .pipe(
@@ -28,7 +30,7 @@ export class HeroService {
       );
   }
 
-
+// emits a default result value if an error occurs
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
@@ -37,7 +39,7 @@ export class HeroService {
     };
   }
 
-
+//http get request to the hero api endpoint with a specific ID and returns an observable that emits a hero object
   getHero(id: number): Observable<Hero> {
     const url = `${this.heroesUrl}/${id}`;
     return this.http.get<Hero>(url).pipe(
@@ -47,7 +49,7 @@ export class HeroService {
   }
 
 
-  //add hero
+  //http post request to the heroes api endpoint with a hero object and returns an observable that emits a new hero object
   addHero(hero: Hero): Observable<Hero> {
     return this.http.post<Hero>(this.heroesUrl, hero, this.httpOptions).pipe(
       tap((newHero: Hero) => this.log(`added hero w/ id=${newHero.id}`)),
@@ -56,7 +58,7 @@ export class HeroService {
   }
 
 
-  //updating hero 
+  //http put request to the heroes api endpoint with a hero object and returns an observable that emits the updated hero object
   updateHero(hero: Hero): Observable<any> {
     return this.http.put(this.heroesUrl, hero, this.httpOptions).pipe(
       tap(_ => this.log(`updated hero id=${hero.id}`)),
@@ -64,7 +66,7 @@ export class HeroService {
     );
   }
 
-  //delete hero
+  //http delete request to the hero api endpoint with a specific ID and returns an observable that emits the deleted hero object
   deleteHero(id: number): Observable<Hero> {
     const url = `${this.heroesUrl}/${id}`;
   
@@ -74,7 +76,7 @@ export class HeroService {
     );
   }
 
-//search heroes
+//http get request to the heroes api endpoint with a search term and returns an observable that emits an array of hero objects that match the search term
   searchHeroes(term: string): Observable<Hero[]> {
     if (!term.trim()) {
       return of([]);
@@ -87,7 +89,7 @@ export class HeroService {
     );
   }
 
-
+//"message" not used
   private log(message: string) {
     this.messageService.add('HeroService: ${message}');
   }
