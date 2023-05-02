@@ -52,7 +52,7 @@ export class HeroService {
   //http post request to the heroes api endpoint with a hero object and returns an observable that emits a new hero object
   addHero(hero: Hero): Observable<Hero> {
     return this.http.post<Hero>(this.heroesUrl, hero, this.httpOptions).pipe(
-      tap((newHero: Hero) => this.log(`added hero w/ id=${newHero.id}`)),
+      tap((newHero: Hero) => this.log(`added hero with id=${newHero.id}`)),
       catchError(this.handleError<Hero>('addHero'))
     );
   }
@@ -89,9 +89,8 @@ export class HeroService {
     );
   }
 
-//"message" not used
   private log(message: string) {
-    this.messageService.add('HeroService: ${message}');
+    this.messageService.add(`HeroService: ${message}`);
   }
 }
 
